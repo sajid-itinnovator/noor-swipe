@@ -177,17 +177,17 @@ const SwipeGameContent = ({ settings, onOpenSettings }) => {
                         <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded shadow-md border border-white/10">{options?.bottom?.text}</span>
                     </div>
                     {/* Left Target */}
-                    <div className="absolute left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                    <div className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
                         <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10">{options?.left?.text}</span>
                     </div>
                     {/* Right Target */}
-                    <div className="absolute right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                    <div className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
                         <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10">{options?.right?.text}</span>
                     </div>
                 </div>
 
                 {/* Draggable Card */}
-                <div className="relative z-10 w-full max-w-xs md:max-w-md aspect-[4/5] md:aspect-[2/1] max-h-[460px]">
+                <div className="relative z-10 w-[85%] md:w-full max-w-xs md:max-w-md aspect-[4/5] md:aspect-[2/1] max-h-[460px]">
                     <AnimatePresence mode="wait">
                         {currentWord && (
                             <SwipeCard
