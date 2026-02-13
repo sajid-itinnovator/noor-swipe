@@ -167,80 +167,79 @@ const SwipeGameContent = ({ settings, onOpenSettings }) => {
             <div className="flex-1 flex items-center justify-center relative px-6">
 
                 {/* Static Option Targets (The Cross) */}
-                <div className="absolute inset-0 pointer-events-none z-0">
-                    {/* Top Target */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
-                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded shadow-md border border-white/10">{options?.top?.text}</span>
-                    </div>
-                    {/* Bottom Target */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
-                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded shadow-md border border-white/10">{options?.bottom?.text}</span>
-                    </div>
-                    {/* Left Target */}
-                    <div className="absolute left-0.5 md:left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
-                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10 -rotate-90 origin-center whitespace-nowrap">{options?.left?.text}</span>
-                    </div>
-                    {/* Right Target */}
-                    <div className="absolute right-0.5 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
-                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10 rotate-90 origin-center whitespace-nowrap">{options?.right?.text}</span>
-                    </div>
+                {/* Top Target */}
+                <div className="absolute top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100 z-0">
+                    <span className="text-lg md:text-xl font-bold font-arabic text-white bg-background-dark/80 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/10">{options?.top?.text}</span>
                 </div>
-
-                {/* Draggable Card */}
-                <div className="relative z-10 w-[65%] md:w-full max-w-xs md:max-w-md aspect-[4/5] md:aspect-[2/1] max-h-[460px]">
-                    <AnimatePresence mode="wait">
-                        {currentWord && (
-                            <SwipeCard
-                                key={currentWord.id}
-                                word={currentWord}
-                                onSwipe={handleSwipe}
-                                mode={settings.userProfile}
-                            />
-                        )}
-                    </AnimatePresence>
-
-                    {/* Feedback Overlay */}
-                    <AnimatePresence>
-                        {feedback && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0 }}
-                                className={`absolute inset-0 flex items-center justify-center z-20 rounded-3xl backdrop-blur-sm ${feedback.type === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'
-                                    }`}
-                            >
-                                <div className={`text-3xl font-bold ${feedback.type === 'success' ? 'text-green-400' : 'text-red-400'
-                                    } shadow-black drop-shadow-lg`}>
-                                    {feedback.message}
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                {/* Bottom Target */}
+                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100 z-0">
+                    <span className="text-lg md:text-xl font-bold font-arabic text-white bg-background-dark/80 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/10">{options?.bottom?.text}</span>
+                </div>
+                {/* Left Target */}
+                <div className="absolute left-2 md:left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100 z-0 max-w-[80px]">
+                    <span className="text-sm md:text-xl font-bold font-arabic text-white bg-background-dark/80 backdrop-blur-md px-2 py-2 rounded-xl text-center shadow-lg border border-white/10 leading-tight break-words">{options?.left?.text}</span>
+                </div>
+                {/* Right Target */}
+                <div className="absolute right-2 md:right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100 z-0 max-w-[80px]">
+                    <span className="text-sm md:text-xl font-bold font-arabic text-white bg-background-dark/80 backdrop-blur-md px-2 py-2 rounded-xl text-center shadow-lg border border-white/10 leading-tight break-words">{options?.right?.text}</span>
                 </div>
             </div>
 
-            {/* Footer / Controls */}
-            <div className="px-6 py-6 flex justify-around items-center">
-                <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
-                        <RotateCcw size={20} />
-                    </div>
-                </button>
-                <button
-                    className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors px-6"
-                    onClick={() => currentWord && playAudio(currentWord.audio)}
-                >
-                    <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 text-primary">
-                        <Volume2 size={28} />
-                    </div>
-                </button>
-                <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
-                        <Lightbulb size={20} />
-                    </div>
-                </button>
+            {/* Draggable Card */}
+            <div className="relative z-10 w-[65%] md:w-full max-w-xs md:max-w-md aspect-[4/5] md:aspect-[2/1] max-h-[460px]">
+                <AnimatePresence mode="wait">
+                    {currentWord && (
+                        <SwipeCard
+                            key={currentWord.id}
+                            word={currentWord}
+                            onSwipe={handleSwipe}
+                            mode={settings.userProfile}
+                        />
+                    )}
+                </AnimatePresence>
+
+                {/* Feedback Overlay */}
+                <AnimatePresence>
+                    {feedback && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0 }}
+                            className={`absolute inset-0 flex items-center justify-center z-20 rounded-3xl backdrop-blur-sm ${feedback.type === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'
+                                }`}
+                        >
+                            <div className={`text-3xl font-bold ${feedback.type === 'success' ? 'text-green-400' : 'text-red-400'
+                                } shadow-black drop-shadow-lg`}>
+                                {feedback.message}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
+
+            {/* Footer / Controls */ }
+    <div className="px-6 py-6 flex justify-around items-center">
+        <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                <RotateCcw size={20} />
+            </div>
+        </button>
+        <button
+            className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors px-6"
+            onClick={() => currentWord && playAudio(currentWord.audio)}
+        >
+            <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 text-primary">
+                <Volume2 size={28} />
+            </div>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                <Lightbulb size={20} />
+            </div>
+        </button>
+    </div>
+        </div >
     );
 };
 
