@@ -1,240 +1,253 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { Settings } from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Volume2, RotateCcw, Lightbulb } from 'lucide-react';
 import SwipeCard from '../../.agent/skills/ui_coordinator/SwipeCard';
 import * as vocabularyLoader from '../../.agent/skills/data_handler/vocabulary_loader';
-import * as learningEngine from '../../.agent/skills/learning_engine/leitner_system';
+import * as SessionStorage from '../../.agent/skills/data_handler/storage_provider';
+import * as ProgressStorage from '../../.agent/skills/progress_tracker/storage_provider';
+import * as leitnerSystem from '../../.agent/skills/learning_engine/leitner_system';
 import { generateQuestion } from '../../.agent/skills/session_generator/distractor_engine';
-import { logAttempt } from '../../.agent/skills/progress_tracker/telemetry_logger';
-import { saveSession } from '../../.agent/skills/data_handler/storage_provider';
-import { saveWordProgress } from '../../.agent/skills/progress_tracker/storage_provider'; // Corrected import
-import { playFeedbackSequence } from '../../.agent/skills/audio_engine/audio_player';
-import vocabularyData from '../data/vocabulary.json';
+import SessionComplete from './SessionComplete';
+import ErrorBoundary from './ErrorBoundary';
+import { playAudio } from '../utils/audio_player';
 
-// MOCK_VOCABULARY removed as per instruction
+const SwipeGameContent = ({ settings, onOpenSettings }) => {
+    const [allWords, setAllWords] = useState([]);
+    const [currentSession, setCurrentSession] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [direction, setDirection] = useState(null);
+    const [streak, setStreak] = useState(0);
+    const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 });
+    const [showCompletion, setShowCompletion] = useState(false);
+    const [feedback, setFeedback] = useState(null);
+    const [levelChanges, setLevelChanges] = useState({}); // Track level changes for session summary
 
-const SwipeGame = ({ settings, onOpenSettings }) => {
-    // Derived state from settings
-    const userProfile = settings?.userProfile || 'adult';
-    const dailyGoal = settings?.dailyGoal || 10;
-
-    const [sessionQueue, setSessionQueue] = useState([]);
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    // currentOptions removed from useState, will be derived via useMemo
-    const [feedback, setFeedback] = useState(null); // 'success' or 'error'
-    const [sessionCompleted, setSessionCompleted] = useState(false);
-    const [startTime, setStartTime] = useState(Date.now());
-    const [completedSessionIds, setCompletedSessionIds] = useState([]); // Track words done in this sitting
-
-    // Initial Load
+    // Load initial session
     useEffect(() => {
-        // Initialize Vocabulary
-        // Ensure IDs are strings for consistency with storage
-        const vocab = vocabularyData.map(v => ({ ...v, id: String(v.id) }));
-        vocabularyLoader.initializeVocabulary(vocab);
-        loadNextBatch();
-    }, [dailyGoal]);
+        const loadSession = async () => {
+            const vocab = await vocabularyLoader.loadVocabulary();
+            setAllWords(vocab);
 
-    const loadNextBatch = () => {
-        const allWords = vocabularyLoader.getAllWords();
-        // Use smart selection logic
-        const sessionWords = learningEngine.getWordsForSession(allWords, dailyGoal, completedSessionIds);
+            // Get words specific to user progress
+            // We pass the list of all words, and the system filters based on SR
+            // Note: In a real app we might only load a subset, but here we load all and filter
+            const sessionWords = leitnerSystem.getWordsForSession(vocab, settings.dailyGoal || 10);
+            setCurrentSession(sessionWords);
+        };
+        loadSession();
+    }, [settings.dailyGoal]);
 
-        setSessionQueue(sessionWords);
-        setCurrentWordIndex(0);
-        setSessionCompleted(false);
-        setStartTime(Date.now());
-    };
+    const currentWord = currentSession[currentIndex];
 
-    // Synchronously derive options for the current word
-    const currentOptions = useMemo(() => {
-        if (sessionQueue.length > 0 && currentWordIndex < sessionQueue.length) {
-            const word = sessionQueue[currentWordIndex];
-            const allWords = vocabularyLoader.getAllWords();
-            try {
-                const question = generateQuestion(word, allWords, userProfile);
-                return question.options;
-            } catch (e) {
-                console.error("Failed to generate question:", e);
-                return null;
-            }
-        }
-        return null;
-    }, [currentWordIndex, sessionQueue, userProfile]);
-
-    // Side Effects: Reset Timer & Check Completion
+    // Junior Mode Auto-Play
     useEffect(() => {
-        if (feedback) return;
-
-        if (sessionQueue.length > 0 && currentWordIndex < sessionQueue.length) {
-            setStartTime(Date.now()); // Reset timer for new word
-        } else if (sessionQueue.length > 0 && currentWordIndex >= sessionQueue.length) {
-            setSessionCompleted(true);
-
-            // Add completed words to the ignore list for next batch
-            const newCompletedIds = sessionQueue.map(w => w.id);
-            setCompletedSessionIds(prev => [...prev, ...newCompletedIds]);
-
-            saveSession({
-                profileId: userProfile,
-                wordsPracticed: sessionQueue.length,
-                duration: Date.now() - startTime
-            });
+        if (settings.userProfile === 'junior' && currentWord && currentWord.audio) {
+            // Small delay to allow transition to finish
+            const timer = setTimeout(() => {
+                playAudio(currentWord.audio);
+            }, 500);
+            return () => clearTimeout(timer);
         }
-    }, [currentWordIndex, sessionQueue, feedback, userProfile]);
+    }, [currentWord, settings.userProfile]);
 
-    const handleSwipe = async (direction) => {
-        if (!currentOptions) return;
+    // Options mapping (Top, Right, Bottom, Left)
+    const options = useMemo(() => {
+        if (!currentWord || allWords.length < 4) return null;
 
-        const selectedOption = currentOptions.find(o => o.direction === direction);
-        const currentWord = sessionQueue[currentWordIndex];
-        const timeTaken = Date.now() - startTime;
-        const isCorrect = selectedOption && selectedOption.isCorrect;
-
-        // Log telemetry
-        logAttempt(currentWord.id, isCorrect, { id: userProfile }, timeTaken);
-
-        // --- FEEDBACK LOGIC STARTED ---
         try {
-            if (isCorrect) {
-                setFeedback('success');
-                // Level Up (Optimistic)
-                learningEngine.levelUp(currentWord.id, currentWord.memoryLevel, (id, lvl, date) => {
-                    console.log(`Word ${id} leveled up to ${lvl}. Next review: ${date}`);
-                    saveWordProgress(id, lvl, date); // Persist progress
-                });
+            const question = generateQuestion(currentWord, allWords, settings.userProfile);
 
-                // Play Audio Sequence
-                await playFeedbackSequence(currentWord, true, settings?.hintLanguage || 'Hindi');
-
-            } else {
-                setFeedback('error');
-                // Level Down
-                learningEngine.levelDown(currentWord.id, currentWord.memoryLevel, (id, lvl, date) => {
-                    console.log(`Word ${id} stayed/moved to level ${lvl}`);
-                    saveWordProgress(id, lvl, date); // Persist progress
-                });
-
-                // Play Error Sequence
-                await playFeedbackSequence(currentWord, false, settings?.hintLanguage || 'Hindi');
-
-                // Re-queue the word
-                setSessionQueue(prev => [...prev, currentWord]);
-            }
-        } catch (error) {
-            console.error("Feedback sequence error:", error);
-        } finally {
-            setFeedback(null);
-            setCurrentWordIndex(prev => prev + 1);
+            // Convert array output from distractor_engine to object map for easier UI rendering
+            const map = {};
+            question.options.forEach(opt => {
+                map[opt.direction] = { text: opt.text, isCorrect: opt.isCorrect };
+            });
+            return map;
+        } catch (e) {
+            console.error("Failed to generate options", e);
+            return null;
         }
+    }, [currentWord, allWords, settings.userProfile]);
+
+    const handleSwipe = (dir) => {
+        if (!currentWord || !options) return;
+
+        // If direction is not in options (e.g. diagonal or undefined), ignore
+        if (!options[dir]) return;
+
+        const selectedOption = options[dir];
+        const isCorrect = selectedOption.isCorrect;
+
+        // Feedback
+        setFeedback({
+            type: isCorrect ? 'success' : 'error',
+            message: isCorrect ? 'Correct!' : 'Incorrect'
+        });
+
+        // Update Stats & SRS
+        if (isCorrect) {
+            setStreak(s => s + 1);
+            setSessionStats(prev => ({ ...prev, correct: prev.correct + 1 }));
+
+            // Level Up
+            const { level, nextReview } = leitnerSystem.levelUp(currentWord.id, currentWord.memoryLevel || 0);
+            ProgressStorage.saveWordProgress(currentWord.id, level, nextReview);
+            setLevelChanges(prev => ({ ...prev, [currentWord.id]: level }));
+
+            // Play audio if enabled
+            if (settings.audioEnabled && currentWord.audio) {
+                playAudio(currentWord.audio);
+            }
+        } else {
+            setStreak(0);
+            setSessionStats(prev => ({ ...prev, incorrect: prev.incorrect + 1 }));
+
+            // Level Down
+            const { level, nextReview } = leitnerSystem.levelDown(currentWord.id, currentWord.memoryLevel || 0);
+            ProgressStorage.saveWordProgress(currentWord.id, level, nextReview);
+            setLevelChanges(prev => ({ ...prev, [currentWord.id]: level }));
+        }
+
+        setDirection(dir);
+
+        // Advance to next card or finish
+        setTimeout(() => {
+            setFeedback(null);
+            setDirection(null);
+            if (currentIndex < currentSession.length - 1) {
+                setCurrentIndex(prev => prev + 1);
+            } else {
+                // Save Session History
+                SessionStorage.saveSession({
+                    correct: sessionStats.correct + (isCorrect ? 1 : 0),
+                    incorrect: sessionStats.incorrect + (isCorrect ? 0 : 1),
+                    total: currentSession.length,
+                    mode: settings.userProfile
+                });
+
+                // Update Total Stars (Currency)
+                ProgressStorage.incrementStars(sessionStats.correct + (isCorrect ? 1 : 0));
+
+                setShowCompletion(true);
+            }
+        }, 600); // Wait for feedback animation
     };
 
-    if (sessionCompleted) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-                <h1 className="text-4xl font-bold mb-4 text-teal-500">Session Complete!</h1>
-                <p className="text-xl mb-8">Great job practicing today.</p>
-                <div className="flex gap-4">
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="px-6 py-3 bg-gray-700 text-white rounded-lg shadow-lg hover:bg-gray-600 transition font-bold"
-                    >
-                        Restart
-                    </button>
-                    <button
-                        onClick={loadNextBatch}
-                        className="px-6 py-3 bg-teal-500 text-white rounded-lg shadow-lg hover:opacity-90 transition font-bold"
-                    >
-                        Continue Learning
-                    </button>
-                </div>
-            </div>
-        );
+    if (showCompletion) {
+        return <SessionComplete stats={sessionStats} total={currentSession.length} />;
     }
 
-    if (sessionQueue.length === 0 || !currentOptions || currentWordIndex >= sessionQueue.length) {
-        return <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">Loading...</div>;
-    }
+    if (!currentWord) return <div className="flex items-center justify-center h-full text-white">Loading...</div>;
+
+    const progress = ((currentIndex) / currentSession.length) * 100;
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-900 text-white font-sans selection:bg-teal-500 selection:text-white pb-20">
-            {/* Top Header */}
-            <div className="bg-gray-100 text-gray-800 px-4 py-3 flex items-center justify-between shadow-md">
-                {/* Left: Streak */}
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 font-bold shadow-sm">
-                        🔥
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-sm">3 Day Streak</h3>
-                        <p className="text-xs text-gray-500">Keep it up!</p>
-                    </div>
-                </div>
-
-                {/* Center: Profile Display */}
-                <div className="hidden sm:block px-3 py-1 rounded-full text-xs font-bold capitalize bg-white shadow text-teal-600">
-                    {userProfile}
-                </div>
-
-                {/* Right: Actions & Stats */}
+        <div className="h-full flex flex-col relative select-none">
+            {/* Header / HUD */}
+            <div className="flex justify-between items-center px-6 py-4 pt-8">
                 <div className="flex items-center gap-2">
-                    <Link
-                        to="/dashboard"
-                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-full text-xs font-bold border border-green-700 transition-colors flex items-center gap-2 shadow-sm"
-                        title="Parent Dashboard"
-                    >
-                        <span>📊</span> <span className="hidden sm:inline">Parent View</span>
-                    </Link>
-
-                    <button
-                        onClick={onOpenSettings}
-                        className="bg-white hover:bg-gray-50 text-gray-600 p-2 rounded-full border border-gray-200 transition-colors shadow-sm"
-                        title="Settings"
-                    >
-                        <Settings size={18} />
-                    </button>
-
-                    <div className="flex items-center gap-2 px-4 py-2 bg-yellow-400 rounded-full shadow-sm ml-2">
-                        <span>★</span>
-                        <span className="font-bold text-sm">420</span>
+                    <div className="h-2 w-24 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-primary-green transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                        />
                     </div>
                 </div>
-            </div>
-
-            {/* Sub Header & Progress */}
-            <div className="px-6 py-4 bg-gray-800/50">
-                <div className="flex items-center justify-between text-gray-400 text-xs mb-2 uppercase tracking-wider font-bold">
-                    <span>Daily Goal</span>
-                    <span>{Math.min(currentWordIndex + 1, dailyGoal)}/{dailyGoal} Words</span>
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-500/10 rounded-full border border-orange-500/20">
+                        <span className="text-orange-500 text-xs font-bold">🔥 {streak}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20">
+                        <span className="text-blue-400 text-xs font-bold">💧 {sessionStats.correct * 10}</span>
+                    </div>
                 </div>
-                {/* Progress Bar */}
-                <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden relative">
-                    <div
-                        className="h-full bg-teal-500 transition-all duration-500 ease-out rounded-full"
-                        style={{ width: `${((currentWordIndex) / dailyGoal) * 100}%` }}
-                    />
-                </div>
-                <div className="text-right text-xs text-gray-500 mt-1">Progress: {Math.round((currentWordIndex / dailyGoal) * 100)}%</div>
             </div>
 
             {/* Main Game Area */}
-            <div className="flex-1 flex flex-col items-center justify-center relative overscroll-none overflow-hidden pb-10">
-                <div className="relative z-10 m-auto scale-90 sm:scale-100">
-                    <SwipeCard
-                        word={sessionQueue[currentWordIndex]}
-                        options={currentOptions}
-                        onSwipe={handleSwipe}
-                        profile={userProfile}
-                        feedback={feedback}
-                    />
+            <div className="flex-1 flex items-center justify-center relative px-6">
+
+                {/* Static Option Targets (The Cross) */}
+                <div className="absolute inset-0 pointer-events-none z-0">
+                    {/* Top Target */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded shadow-md border border-white/10">{options?.top?.text}</span>
+                    </div>
+                    {/* Bottom Target */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded shadow-md border border-white/10">{options?.bottom?.text}</span>
+                    </div>
+                    {/* Left Target */}
+                    <div className="absolute left-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10">{options?.left?.text}</span>
+                    </div>
+                    {/* Right Target */}
+                    <div className="absolute right-12 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 opacity-90 transition-opacity duration-300 hover:opacity-100">
+                        <span className="text-xl font-bold font-arabic text-white bg-background-dark/95 px-4 py-2 rounded max-w-[140px] text-center shadow-md border border-white/10">{options?.right?.text}</span>
+                    </div>
                 </div>
-                <div className="absolute bottom-8 text-center text-gray-500 text-sm font-medium animate-pulse">
-                    Swipe toward the correct meaning
+
+                {/* Draggable Card */}
+                <div className="relative z-10 w-full max-w-xs md:max-w-md aspect-[4/5] md:aspect-[2/1] max-h-[460px]">
+                    <AnimatePresence mode="wait">
+                        {currentWord && (
+                            <SwipeCard
+                                key={currentWord.id}
+                                word={currentWord}
+                                onSwipe={handleSwipe}
+                                mode={settings.userProfile}
+                            />
+                        )}
+                    </AnimatePresence>
+
+                    {/* Feedback Overlay */}
+                    <AnimatePresence>
+                        {feedback && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0 }}
+                                className={`absolute inset-0 flex items-center justify-center z-20 rounded-3xl backdrop-blur-sm ${feedback.type === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'
+                                    }`}
+                            >
+                                <div className={`text-3xl font-bold ${feedback.type === 'success' ? 'text-green-400' : 'text-red-400'
+                                    } shadow-black drop-shadow-lg`}>
+                                    {feedback.message}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
+            </div>
+
+            {/* Footer / Controls */}
+            <div className="px-6 py-6 flex justify-around items-center">
+                <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                        <RotateCcw size={20} />
+                    </div>
+                </button>
+                <button
+                    className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors px-6"
+                    onClick={() => currentWord && playAudio(currentWord.audio)}
+                >
+                    <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20 text-primary">
+                        <Volume2 size={28} />
+                    </div>
+                </button>
+                <button className="flex flex-col items-center gap-1 text-zinc-500 hover:text-white transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5">
+                        <Lightbulb size={20} />
+                    </div>
+                </button>
             </div>
         </div>
     );
 };
+
+const SwipeGame = (props) => (
+    <ErrorBoundary>
+        <SwipeGameContent {...props} />
+    </ErrorBoundary>
+);
 
 export default SwipeGame;

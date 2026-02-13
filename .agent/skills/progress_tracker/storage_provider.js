@@ -18,9 +18,29 @@ const defaultState = {
  * Retrieves current progress from LocalStorage.
  * @returns {Object}
  */
+// In-memory fallback
+let memoryStorage = {};
+
+const safeGetItem = (key) => {
+    try {
+        return localStorage.getItem(key);
+    } catch (e) {
+        console.warn("LocalStorage access denied, using memory storage");
+        return memoryStorage[key] || null;
+    }
+};
+
+const safeSetItem = (key, value) => {
+    try {
+        localStorage.setItem(key, value);
+    } catch (e) {
+        memoryStorage[key] = value;
+    }
+};
+
 export const getProgress = () => {
     try {
-        const data = localStorage.getItem(STORAGE_KEY);
+        const data = safeGetItem(STORAGE_KEY);
         return data ? JSON.parse(data) : { ...defaultState };
     } catch (e) {
         console.error("Failed to load progress", e);
@@ -43,7 +63,7 @@ export const saveProgress = (wordId, newLevel, nextReviewDate) => {
         nextReview: nextReviewDate instanceof Date ? nextReviewDate.toISOString() : nextReviewDate
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    safeSetItem(STORAGE_KEY, JSON.stringify(data));
 };
 
 export const saveWordProgress = (wordId, level, nextReviewDate) => {
@@ -86,5 +106,5 @@ export const incrementStars = (amount) => {
     }
 
     data.lastSessionDate = now.toISOString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    safeSetItem(STORAGE_KEY, JSON.stringify(data));
 };

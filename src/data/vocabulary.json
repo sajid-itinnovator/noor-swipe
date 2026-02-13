@@ -1,14 +1,14 @@
 [
   {
     "id": "1",
-    "arabic": "الله",
+    "arabic": "اللّٰه",
     "meaning_en": "Allah",
     "phonics": "'Al-lah",
     "memoryLevel": 0
   },
   {
     "id": "2",
-    "arabic": "الشَّيْطن",
+    "arabic": "الشَّيْطٰن",
     "meaning_en": "Satan",
     "phonics": "Ash-shaytaan",
     "memoryLevel": 0
@@ -29,7 +29,7 @@
   },
   {
     "id": "5",
-    "arabic": "اَنْتَ",
+    "arabic": "أَنْتَ",
     "meaning_en": "you (singular)",
     "phonics": "'anta",
     "memoryLevel": 0
@@ -78,85 +78,85 @@
   },
   {
     "id": "12",
-    "arabic": "اﺳﻢِْ",
+    "arabic": "اِسْم",
     "meaning_en": "Name",
     "phonics": "Ism",
     "memoryLevel": 0
   },
   {
     "id": "13",
-    "arabic": "ر ح م",
+    "arabic": "الرَّحْمٰن",
     "meaning_en": "the Most Gracious",
     "phonics": "Ar-Rahmaan",
     "memoryLevel": 0
   },
   {
     "id": "14",
-    "arabic": "ر ح م",
+    "arabic": "الرَّحِيْم",
     "meaning_en": "the Most Merciful",
     "phonics": "Ar-Raheem",
     "memoryLevel": 0
   },
   {
     "id": "15",
-    "arabic": "ك ر م",
-    "meaning_en": "Generous",
+    "arabic": "الْكَرِيم",
+    "meaning_en": "the Generous",
     "phonics": "Al-Kareem",
     "memoryLevel": 0
   },
   {
     "id": "16",
-    "arabic": "ح م د",
+    "arabic": "الْحَمْد",
     "meaning_en": "All praises and thanks",
     "phonics": "Al-Hamd",
     "memoryLevel": 0
   },
   {
     "id": "17",
-    "arabic": "لِلَّهِ",
+    "arabic": "لِلّٰهِ",
     "meaning_en": "for toAllah / Allah",
     "phonics": "Lil-laahi",
     "memoryLevel": 0
   },
   {
     "id": "18",
-    "arabic": "ع ل م",
-    "meaning_en": "of the universe. All praises and thanksthe Lord (be) to",
-    "phonics": "Allah,",
+    "arabic": "الْعٰلَمِيْن",
+    "meaning_en": "of the worlds/universe",
+    "phonics": "Al-Aalameen",
     "memoryLevel": 0
   },
   {
     "id": "19",
-    "arabic": "س ل م",
+    "arabic": "مُسْلِم",
     "meaning_en": "Muslim",
     "phonics": "Muslim",
     "memoryLevel": 0
   },
   {
     "id": "20",
-    "arabic": "أ م ن",
-    "meaning_en": "believer mu",
-    "phonics": "Min",
+    "arabic": "مُؤْمِن",
+    "meaning_en": "believer",
+    "phonics": "Mu'min",
     "memoryLevel": 0
   },
   {
     "id": "21",
-    "arabic": "ش ر ك",
+    "arabic": "مُشْرِك",
     "meaning_en": "polytheist",
     "phonics": "Mushrik",
     "memoryLevel": 0
   },
   {
     "id": "22",
-    "arabic": "ك ف ر",
+    "arabic": "كَافِر",
     "meaning_en": "disbeliever",
     "phonics": "Kaafir",
     "memoryLevel": 0
   },
   {
     "id": "23",
-    "arabic": "ص ل ح",
-    "meaning_en": "a righteous person",
+    "arabic": "صَالِح",
+    "meaning_en": "righteous person",
     "phonics": "Saalih",
     "memoryLevel": 0
   },
@@ -169,21 +169,21 @@
   },
   {
     "id": "25",
-    "arabic": "د ي ن",
-    "meaning_en": "the Judgment.",
+    "arabic": "الدِّين",
+    "meaning_en": "the Judgment",
     "phonics": "Ad-Deen",
     "memoryLevel": 0
   },
   {
     "id": "26",
-    "arabic": "اﻳﺎك َِ",
+    "arabic": "إِيَّاكَ",
     "meaning_en": "You Alone",
     "phonics": "Iyyaaka",
     "memoryLevel": 0
   },
   {
     "id": "27",
-    "arabic": "ب َّ",
+    "arabic": "رَبّ",
     "meaning_en": "Lord",
     "phonics": "Rabb",
     "memoryLevel": 0
@@ -197,16 +197,16 @@
   },
   {
     "id": "29",
-    "arabic": "ص ر ط",
+    "arabic": "الصِّرَاط",
     "meaning_en": "the path",
     "phonics": "As-Siraat",
     "memoryLevel": 0
   },
   {
     "id": "30",
-    "arabic": "ق و م",
-    "meaning_en": "Guide us(to) the path, the",
-    "phonics": "Straight.",
+    "arabic": "الْمُسْتَقِيْم",
+    "meaning_en": "the Straight",
+    "phonics": "Al-Mustaqeem",
     "memoryLevel": 0
   },
   {
@@ -246,8 +246,8 @@
   },
   {
     "id": "36",
-    "arabic": "ك ت ب",
-    "meaning_en": "a book",
+    "arabic": "كِتٰب",
+    "meaning_en": "book",
     "phonics": "Kitaab",
     "memoryLevel": 0
   },
@@ -260,23 +260,23 @@
   },
   {
     "id": "38",
-    "arabic": "ﻳﺘﻪ،ًٌٍٍَََََََََََََََُُُِِِْْْٰٰٰٰٰٰٖٗ  ِِِْْ ﻳﺘﻪ، ﻳﺘﻚ، ﻳﺘﻰ، ﻳﺘﻰ، ﻳﺘﻨﺎ، ﻳﺘﻨﺎ، ﻳﺘﻨﺎ، ﻳﺘﻬﺎَََََُِِِِِِِِِِِٰٰٰٰٰٰٰٰٖاﻳﺔ، ﻳﺔ، ﻳﺔ، ﻳﺔ، ﻳﺘﻚ، ﻳﺘﻴﻦ، ﻳﺖ، اﻳﺖ، ﻳﺖ، ﻳﺖ، ﻳﺘﻪ،",
+    "arabic": "اٰيَة",
     "meaning_en": "sign/verse",
-    "phonics": "Aayat",
+    "phonics": "Aayah",
     "memoryLevel": 0
   },
   {
     "id": "39",
-    "arabic": "أ ر ض",
-    "meaning_en": "the earth Al-",
-    "phonics": "Ard",
+    "arabic": "الْأَرْض",
+    "meaning_en": "the earth",
+    "phonics": "Al-Ard",
     "memoryLevel": 0
   },
   {
     "id": "40",
-    "arabic": "س م و",
-    "meaning_en": "Allah (is the) Light(of) the heavensand the",
-    "phonics": "Earth.",
+    "arabic": "السَّمٰوٰت",
+    "meaning_en": "the heavens",
+    "phonics": "As-Samawaat",
     "memoryLevel": 0
   },
   {
@@ -318,7 +318,7 @@
     "id": "46",
     "arabic": "ﻟﻘﺪََ",
     "meaning_en": "certainly",
-    "phonics": "LaQad",
+    "phonics": "Laqad",
     "memoryLevel": 0
   },
   {
@@ -337,9 +337,9 @@
   },
   {
     "id": "49",
-    "arabic": "ش ي ء",
-    "meaning_en": "wills shaa",
-    "phonics": "A",
+    "arabic": "شَاءَ",
+    "meaning_en": "wills",
+    "phonics": "Shaa'a",
     "memoryLevel": 0
   },
   {
@@ -353,12 +353,12 @@
     "id": "51",
     "arabic": "إِنَّمَا",
     "meaning_en": "only",
-    "phonics": "'innamaa",
+    "phonics": "Innamaa",
     "memoryLevel": 0
   },
   {
     "id": "52",
-    "arabic": "ع م ل",
+    "arabic": "عَمَل",
     "meaning_en": "deed",
     "phonics": "Amal",
     "memoryLevel": 0
@@ -379,9 +379,9 @@
   },
   {
     "id": "55",
-    "arabic": "ِاﻟﺴﺒﻴﻞَْ",
+    "arabic": "السَّبِيل",
     "meaning_en": "the way",
-    "phonics": "As-sabeel",
+    "phonics": "As-Sabeel",
     "memoryLevel": 0
   },
   {
@@ -393,23 +393,23 @@
   },
   {
     "id": "57",
-    "arabic": "ِِاﻟﺬى، اﻟﺬى، ﺎﻟﺬى، وﺑﺎﻟﺬى، ﰷﻟﺬى، ﻟﻠﺬى، ﻟﻠﺬى َََََِِِِِِِِْْْْْْْ",
-    "meaning_en": "The One Whotaughtby the",
-    "phonics": "Pen,",
+    "arabic": "الَّذِي عَلَّمَ بِالْقَلَم",
+    "meaning_en": "The One Who taught by the pen",
+    "phonics": "Alladhee 'allama bil-qalam",
     "memoryLevel": 0
   },
   {
     "id": "58",
-    "arabic": "ايَ",
-    "meaning_en": "which of you(is) best(in)",
-    "phonics": "Deed.",
+    "arabic": "أَيُّكُم",
+    "meaning_en": "Which of you",
+    "phonics": "Ayyukum",
     "memoryLevel": 0
   },
   {
     "id": "59",
-    "arabic": "ح س ن",
-    "meaning_en": "which of you(is) best(in)",
-    "phonics": "Deed.",
+    "arabic": "أَحْسَنُ",
+    "meaning_en": "is best",
+    "phonics": "Ahsanu",
     "memoryLevel": 0
   },
   {
@@ -470,21 +470,21 @@
   },
   {
     "id": "68",
-    "arabic": "ﻫﺬا َٰ",
+    "arabic": "هٰذَا",
     "meaning_en": "This(is the)",
     "phonics": "PathStraight.",
     "memoryLevel": 0
   },
   {
     "id": "69",
-    "arabic": "ﻫﺬه ِٰٖ",
+    "arabic": "هٰذِهٖ",
     "meaning_en": "this",
     "phonics": "Haadhihee",
     "memoryLevel": 0
   },
   {
     "id": "70",
-    "arabic": "ذﻟﻚ َِٰ",
+    "arabic": "ذٰلِكَ",
     "meaning_en": "that",
     "phonics": "Dhaalika",
     "memoryLevel": 0
@@ -505,7 +505,7 @@
   },
   {
     "id": "73",
-    "arabic": "اﻟﻚ َُ",
+    "arabic": "اُولٰٓئِكَ",
     "meaning_en": "those ulaa",
     "phonics": "Ika",
     "memoryLevel": 0
@@ -540,23 +540,23 @@
   },
   {
     "id": "78",
-    "arabic": "ف ع ل",
-    "meaning_en": "he did fa",
-    "phonics": "Ala",
+    "arabic": "فَعَلَ",
+    "meaning_en": "he did",
+    "phonics": "Fa'ala",
     "memoryLevel": 0
   },
   {
     "id": "79",
-    "arabic": "ج ع ل",
-    "meaning_en": "Indeed,Allah has setfor everythinga",
-    "phonics": "Measure.",
+    "arabic": "جَعَلَ",
+    "meaning_en": "he made/set",
+    "phonics": "Ja'ala",
     "memoryLevel": 0
   },
   {
     "id": "80",
-    "arabic": "ف ت ح",
-    "meaning_en": "he openedhe revealed",
-    "phonics": "Fataa",
+    "arabic": "فَتَحَ",
+    "meaning_en": "he opened",
+    "phonics": "Fataha",
     "memoryLevel": 0
   },
   {
@@ -596,21 +596,21 @@
   },
   {
     "id": "86",
-    "arabic": "خ ل ق",
+    "arabic": "خَلَقَ",
     "meaning_en": "He created",
     "phonics": "Khalaqa",
     "memoryLevel": 0
   },
   {
     "id": "87",
-    "arabic": "ذ ك ر",
+    "arabic": "ذَكَرَ",
     "meaning_en": "he remembered",
     "phonics": "Dhakara",
     "memoryLevel": 0
   },
   {
     "id": "88",
-    "arabic": "ع ب د",
+    "arabic": "عَبَدَ",
     "meaning_en": "he worshipped",
     "phonics": "Abada",
     "memoryLevel": 0
@@ -624,63 +624,63 @@
   },
   {
     "id": "90",
-    "arabic": "ض ر ب",
-    "meaning_en": "he hit/he stroke",
+    "arabic": "ضَرَبَ",
+    "meaning_en": "he struck/hit",
     "phonics": "Daraba",
     "memoryLevel": 0
   },
   {
     "id": "91",
-    "arabic": "س م ع",
-    "meaning_en": "he listened sami",
-    "phonics": "A",
+    "arabic": "سَمِعَ",
+    "meaning_en": "he listened",
+    "phonics": "Sami'a",
     "memoryLevel": 0
   },
   {
     "id": "92",
-    "arabic": "ع ل م",
+    "arabic": "عَلِمَ",
     "meaning_en": "he knew",
     "phonics": "Alima",
     "memoryLevel": 0
   },
   {
     "id": "93",
-    "arabic": "ع م ل",
-    "meaning_en": "he did",
+    "arabic": "عَمِلَ",
+    "meaning_en": "he did/worked",
     "phonics": "Amila",
     "memoryLevel": 0
   },
   {
     "id": "94",
-    "arabic": "ح د ث",
-    "meaning_en": "statement story",
+    "arabic": "حَدِيث",
+    "meaning_en": "statement/story",
     "phonics": "Hadeeth",
     "memoryLevel": 0
   },
   {
     "id": "95",
-    "arabic": "أ ل ه",
-    "meaning_en": "the God",
+    "arabic": "إِلَٰه",
+    "meaning_en": "god",
     "phonics": "Ilaah",
     "memoryLevel": 0
   },
   {
     "id": "96",
-    "arabic": "ﺻﺪرَ",
+    "arabic": "صَدْر",
     "meaning_en": "chest",
     "phonics": "Sadr",
     "memoryLevel": 0
   },
   {
     "id": "97",
-    "arabic": "ﻣﻠﻚََ",
+    "arabic": "مَلَك",
     "meaning_en": "angel",
     "phonics": "Malak",
     "memoryLevel": 0
   },
   {
     "id": "98",
-    "arabic": "ﺟﻨﺔِ",
+    "arabic": "جِنَّة",
     "meaning_en": "Jinn",
     "phonics": "Jinnah",
     "memoryLevel": 0
@@ -736,14 +736,14 @@
   },
   {
     "id": "106",
-    "arabic": "اﻟﺼﻠﻮةَ",
+    "arabic": "الصَّلٰوة",
     "meaning_en": "the prayer",
     "phonics": "As-Salaat",
     "memoryLevel": 0
   },
   {
     "id": "107",
-    "arabic": "ش ر ك",
+    "arabic": "شَرِيك",
     "meaning_en": "partner",
     "phonics": "Shareek",
     "memoryLevel": 0
@@ -799,8 +799,8 @@
   },
   {
     "id": "115",
-    "arabic": "ع ب د",
-    "meaning_en": "slaves, servants",
+    "arabic": "عِبَاد",
+    "meaning_en": "slaves/servants",
     "phonics": "Ibaad",
     "memoryLevel": 0
   },
@@ -813,65 +813,65 @@
   },
   {
     "id": "117",
-    "arabic": "اﺑﻫﻴﻢ ِِْٰ",
+    "arabic": "إِبْرٰهِيْم",
     "meaning_en": "Abraham",
     "phonics": "Ibraaheem",
     "memoryLevel": 0
   },
   {
     "id": "118",
-    "arabic": "ن ف س",
-    "meaning_en": "soul",
+    "arabic": "نَفْس",
+    "meaning_en": "soul/self",
     "phonics": "Nafs",
     "memoryLevel": 0
   },
   {
     "id": "119",
-    "arabic": "ك ث ر",
-    "meaning_en": "much",
+    "arabic": "كَثِير",
+    "meaning_en": "many/much",
     "phonics": "Katheer",
     "memoryLevel": 0
   },
   {
     "id": "120",
-    "arabic": "ذ ن ب",
+    "arabic": "الذُّنُوب",
     "meaning_en": "the sins",
-    "phonics": "Adh-dhunoob",
+    "phonics": "Adh-Dhunoob",
     "memoryLevel": 0
   },
   {
     "id": "121",
-    "arabic": "غ ف ر",
+    "arabic": "غَفُور",
     "meaning_en": "Oft-Forgiving",
     "phonics": "Ghafoor",
     "memoryLevel": 0
   },
   {
     "id": "122",
-    "arabic": "د ن و",
+    "arabic": "الدُّنْيَا",
     "meaning_en": "the world",
-    "phonics": "Ad-dunya",
+    "phonics": "Ad-Dunya",
     "memoryLevel": 0
   },
   {
     "id": "123",
-    "arabic": "أ خ ر",
-    "meaning_en": "the Hereafter Al-",
-    "phonics": "Aakhirat",
+    "arabic": "الْآخِرَة",
+    "meaning_en": "the Hereafter",
+    "phonics": "Al-Aakhirah",
     "memoryLevel": 0
   },
   {
     "id": "124",
-    "arabic": "ع ذ ب",
+    "arabic": "عَذَاب",
     "meaning_en": "punishment",
     "phonics": "Adhaab",
     "memoryLevel": 0
   },
   {
     "id": "125",
-    "arabic": "نار",
+    "arabic": "النَّار",
     "meaning_en": "the Fire",
-    "phonics": "naar",
+    "phonics": "An-Naar",
     "memoryLevel": 0
   }
 ]

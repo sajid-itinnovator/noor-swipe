@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "arabic": "كِتَاب",
+        "phonetic": "kitaab",
+        "meaning_en": "book",
+        "audio": "audio/1_ar.mp3",
+        "category": "Education"
+    },
+    {
+        "id": 2,
+        "arabic": "قَلَم",
+        "phonetic": "qalam",
+        "meaning_en": "pen",
+        "audio": "audio/2_ar.mp3",
+        "category": "Education"
+    },
+    {
+        "id": 3,
+        "arabic": "مَدْرَسَة",
+        "phonetic": "madrasa",
+        "meaning_en": "school",
+        "audio": "audio/3_ar.mp3",
+        "category": "Education"
+    },
+    {
+        "id": 4,
+        "arabic": "شَمْس",
+        "phonetic": "shams",
+        "meaning_en": "sun",
+        "audio": "audio/4_ar.mp3",
+        "category": "Nature"
+    },
+    {
+        "id": 5,
+        "arabic": "قَمَر",
+        "phonetic": "qamar",
+        "meaning_en": "moon",
+        "audio": "audio/5_ar.mp3",
+        "category": "Nature"
+    },
+    {
+        "id": 6,
+        "arabic": "مَاء",
+        "phonetic": "maa'",
+        "meaning_en": "water",
+        "audio": "audio/6_ar.mp3",
+        "category": "Nature"
+    },
+    {
+        "id": 7,
+        "arabic": "بَيْت",
+        "phonetic": "bayt",
+        "meaning_en": "house",
+        "audio": "audio/7_ar.mp3",
+        "category": "Daily Life"
+    },
+    {
+        "id": 8,
+        "arabic": "بَاب",
+        "phonetic": "baab",
+        "meaning_en": "door",
+        "audio": "audio/8_ar.mp3",
+        "category": "Daily Life"
+    },
+    {
+        "id": 9,
+        "arabic": "نُور",
+        "phonetic": "noor",
+        "meaning_en": "light",
+        "audio": "audio/9_ar.mp3",
+        "category": "Abstract"
+    },
+    {
+        "id": 10,
+        "arabic": "سَلَام",
+        "phonetic": "salaam",
+        "meaning_en": "peace",
+        "audio": "audio/10_ar.mp3",
+        "category": "Abstract"
+    }
+]

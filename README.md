@@ -1,16 +1,62 @@
-# React + Vite
+# Noor Swipe - Arabic Learning App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A gamified spaced-repetition app for learning Quranic Arabic vocabulary.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-## React Compiler
+2. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## User Guide
 
-## Expanding the ESLint configuration
+### Profiles
+- **Adult**: Standard mode. Shows Arabic text, phonics, and meaning.
+- **Junior**: Simplified mode for non-readers. Hides Arabic text, emphasizes listening and visual association (icons).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### How to Play
+- **Swipe Right**: Correct match / "I know this".
+- **Swipe Left**: Incorrect match / "I don't know this".
+- **Spaced Repetition**: Words move through Levels 0-5. Higher levels appear less frequently.
+
+## Data Format
+
+The app uses `vocabulary.json` for word data. Format:
+
+```json
+[
+  {
+    "id": 1,
+    "arabic": "Word",
+    "phonetic": "Phonetic",
+    "meaning_en": "Meaning",
+    "audio": "path/to/audio.mp3",
+    "category": "Category"
+  }
+]
+```
+
+### Audio Files
+Audio files should be placed in `public/audio/` and named `[id]_ar.mp3` (e.g., `1_ar.mp3`).
+
+## Deployment
+
+### Vercel / Netlify
+1. Build the project:
+   ```bash
+   npm run build
+   ```
+2. Deploy the `dist` folder.
+3. Ensure all assets in `public` are correctly referenced.
+
+## Troubleshooting
+
+- **Audio not playing**: Ensure `public/audio` exists and files are named correctly. Check browser permissions.
+- **Progress not saving**: Persistence uses `localStorage`. Ensure browser storage is enabled.
+- **App crashing**: Check the console. `ErrorBoundary` should catch most UI crashes.

@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .ios-blur {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .gold-glow {
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+    }
+
+    .arabic-text {
+        direction: rtl;
+    }
+}
+
+body {
+    background-color: #121212;
+    /* Default Dark Background */
+    color: #f8f8f8;
+    overscroll-behavior-y: contain;
+    min-height: 100dvh;
+    font-family: 'Lexend', 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Common Card Styles */
+.option-card {
+    background: #2A2A2A;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.option-card:active {
+    background: #333333;
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: scale(0.97);
+}
+
+.center-card {
+    background: #2A2A2A;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}

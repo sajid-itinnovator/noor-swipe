@@ -8,17 +8,25 @@ export const setVolume = (vol) => { volume = Math.max(0, Math.min(1, vol)); };
 const playSound = (path) => {
     if (isMuted) return Promise.resolve();
     return new Promise((resolve) => {
-        const audio = new Audio(path);
-        audio.volume = volume;
-        audio.onended = resolve;
-        audio.onerror = () => {
-            console.warn(`Audio playback failed for ${path}`);
-            resolve(); // Verify path existence, but don't block flow
-        };
-        audio.play().catch(error => {
-            console.warn(`Audio playback failed for ${path}:`, error);
+        try {
+            const audio = new Audio(path);
+            audio.volume = volume;
+            audio.onended = resolve;
+            audio.onerror = () => {
+                console.warn(`Audio playback failed for ${path}`);
+                resolve();
+            };
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.warn(`Audio playback failed for ${path}:`, error);
+                    resolve();
+                });
+            }
+        } catch (e) {
+            console.error("Audio construction failed:", e);
             resolve();
-        });
+        }
     });
 };
 
